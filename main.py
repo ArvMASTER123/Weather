@@ -1,14 +1,20 @@
 import os
 import os.path as op
-import bcrypt
 import requests
 import json
+from werkzeug.utils import secure_filename
+from sqlalchemy.orm import relationship
+from datetime import datetime as dt
+from decimal import Decimal
 from flask_admin import Admin
-from flask_sqlalchemy import SQLAlchemy
-
-from flask import Flask, render_template, url_for, redirect, request
-from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
+from flask import session as login_session
 from flask_bcrypt import Bcrypt
+from flask_login import UserMixin, LoginManager, login_user, logout_user, current_user
+from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+from flask_admin.contrib.sqla import ModelView
+from flask import Flask, render_template, url_for, redirect, request
+from sqlalchemy.sql import func
 
 UPLOAD_FOLDER = 'static'
 app = Flask(__name__, static_folder='static')
@@ -45,6 +51,7 @@ def load_user(user_id):
 @app.route('/')
 @app.route('/home')
 def option():
+    print(current_user.is_authenticated)
     return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -103,6 +110,14 @@ def weather():
                                us_epa_index=us_epa_index)
 
     return render_template('weather.html')
+
+
+@app.route('/logout')
+def logout():
+    del login_session['username']
+    logout_user()
+    return redirect(url_for('homepage'))
+
 
 if __name__ == "__main__":
     with app.app_context():
