@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+</head>
+<body>
+    <h1>Weather Information</h1>
+    <form method="POST">
+        <label for="city">Enter City:</label><br>
+        <input type="text" id="city" name="city"><br><br>
+        <input type="submit" value="Get Weather"><br><br>
+
+        <button><a href="{{url_for('login')}}">Login</a></button><br><br>
+        <button><a href="{{url_for('option')}}">Home</a></button>
+    </form>
+    <div>
+        {% if location_name %}
+        <h2>Location: {{ location_name }}, {{ location_country }}</h2>
+        <p>Temperature: {{ temperature_celsius }}°C</p>
+        <p>Wind Speed: {{ wind_mph }} mph</p>
+        <p>Humidity: {{ humidity }}%</p>
+        <p>Cloud: {{ cloud }}</p>
+        <p>US EPA Index: {{ us_epa_index }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
